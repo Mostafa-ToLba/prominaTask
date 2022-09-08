@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:prominatask/shared/Components/components.dart';
 import 'package:prominatask/shared/constans/constans.dart';
+import 'package:scale_button/scale_button.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../shared/styles/colors/colors.dart';
@@ -16,7 +17,18 @@ class SecondPageScreen extends StatefulWidget {
 }
 
 class _SecondPageScreenState extends State<SecondPageScreen> {
-
+  Future selectDate(BuildContext context) async {
+    await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.parse('2023-10-30'),).then((value)
+    {
+      setState(() {
+        dateController.text =DateFormat.yMMMd().format(value!);
+      });
+    });
+  }
    @override
    Widget build(BuildContext context) {
      return Scaffold(
@@ -101,12 +113,7 @@ class _SecondPageScreenState extends State<SecondPageScreen> {
                   controle:dateController,
                   ontap: ()
                   {
-                    selectDate(context).then((value)
-                    {
-                      setState(() {
-                        dateController.text =DateFormat.yMMMd().format(value!);
-                      });
-                    });
+                    selectDate(context);
                   }
                 ),
               ),
@@ -178,14 +185,17 @@ class _SecondPageScreenState extends State<SecondPageScreen> {
                ),
                SizedBox(height: 5.h,),
                Center(
-                 child: Container(
+                 child: ScaleButton(
+                   bound: .1,
+                   child: Container(
            width: 68.w,height: 6.5.h,
-           child: Center(child: Text('Create Task',style: TextStyle(fontSize: 18.sp,color: Colors.white,fontWeight: FontWeight.w600),)),
+           child: Center(child: TextButton(onPressed: () {  }, child: Text('Create Task',style: TextStyle(fontSize: 18.sp,color: Colors.white,fontWeight: FontWeight.w600),), )),
            decoration: BoxDecoration(color: layoutColor,shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(10),
              border: Border.all(color: layoutColor,width: .8.sp),
            ),
 
          ),
+                 ),
                ),
              ],
            ),
